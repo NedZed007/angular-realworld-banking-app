@@ -1,8 +1,6 @@
-import 'zone.js';
-import 'zone.js/testing';
-import { describe, it, expect, beforeEach, afterEach, beforeAll, vi } from 'vitest';
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -11,10 +9,6 @@ import { JwtService } from './jwt.service';
 import { User } from '../user.model';
 
 describe('UserService', () => {
-  beforeAll(() => {
-    getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
-  });
-
   let service: UserService;
   let httpMock: HttpTestingController;
   let jwtService: any;
@@ -40,7 +34,12 @@ describe('UserService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [UserService, { provide: JwtService, useValue: jwtService }, { provide: Router, useValue: router }],
+      providers: [
+        provideZonelessChangeDetection(),
+        UserService,
+        { provide: JwtService, useValue: jwtService },
+        { provide: Router, useValue: router },
+      ],
     });
 
     service = TestBed.inject(UserService);

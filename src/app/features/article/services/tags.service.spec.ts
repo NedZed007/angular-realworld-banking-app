@@ -1,17 +1,11 @@
-import 'zone.js';
-import 'zone.js/testing';
-import { describe, it, expect, beforeEach, afterEach, beforeAll, vi } from 'vitest';
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 import { TagsService } from './tags.service';
 
 describe('TagsService', () => {
-  beforeAll(() => {
-    getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
-  });
-
   let service: TagsService;
   let httpMock: HttpTestingController;
 
@@ -20,7 +14,7 @@ describe('TagsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TagsService],
+      providers: [provideZonelessChangeDetection(), TagsService],
     });
 
     service = TestBed.inject(TagsService);
